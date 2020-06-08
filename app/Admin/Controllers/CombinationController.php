@@ -13,6 +13,7 @@ use Illuminate\Support\MessageBag;
 
 class CombinationController extends AdminController
 {
+
     /**
      * Title for current resource.
      *
@@ -31,7 +32,7 @@ class CombinationController extends AdminController
 
         $grid->column('name', __('Name'));
         $grid->column('show_name', __('Show name'));
-        $grid->column('type', __('Type'))->display(function ($type){
+        $grid->column('type', __('Type'))->display(function ($type) {
             return ItemType::getDescription($type);
         })->label();
         $grid->column('created_at', __('Created at'));
@@ -71,39 +72,35 @@ class CombinationController extends AdminController
         $form->text('name', __('Name'))->creationRules(['required', "unique:combinations"])
             ->updateRules(['required', "unique:combinations,name,{{id}}"]);
         $form->text('show_name', __('Show name'));
-        $form->radio('type')->options(ItemType::toSelectArray())->when(ItemType::Harness, function (Form $form) {
-
-            $form->multipleSelect('items', 'Harness')->options(Item::where('type', ItemType::Harness)->pluck('name', 'id'));
-
-        })->when(ItemType::Extender, function (Form $form) {
-
-            $form->multipleSelect('items', 'Extender')->options(Item::where('type', ItemType::Extender)->pluck('name', 'id'));
-
-        })->required();
-
+        $form->radio('type')->options(ItemType::toSelectArray())->required();
+        $form->listbox('items', 'Extender')->options(Item::pluck('name', 'id'));
 
         $form->saving(function (Form $form) {
-
-            if(is_null($form->items)){
-                throw new \Exception("必须选择".ItemType::getDescription(intval($form->type)));
+            if (is_null($form->items)) {
+                throw new \Exception("必须选择" . ItemType::getDescription(intval($form->type)));
             }
 
             $items = array_filter($form->items);
 
-            if(count($items) > 2){
-                throw new \Exception("最多只能选择两个".ItemType::getDescription(intval($form->type)));
+            if (count($items) > 2) {
+                throw new \Exception("最多只能选择两个" . ItemType::getDescription(intval($form->type)));
             }
 
-            if(count($items) == 2){
+            if (count($items) == 2) {
                 $items = Item::with('component')->whereIn('id', $items)->get();
-                $items = $items->map(function ($item){
+                $items = $items->map(function ($item) {
                     return [
-                        'form' => $item->form,
+                        'type'   => $item->type,
+                        'form'   => $item->form,
                         'length' => $item->component->sum('length')
                     ];
                 })->toArray();
 
-                if($items[0]['form'] != $items[1]['form'] || $items[0]['length'] != $items[1]['length']){
+                if ($items[0]['type'] != $items[1]['type'] || $items[0]['type'] != $form->type) {
+                    throw new \Exception("type 必须一致");
+                }
+
+                if ($items[0]['form'] != $items[1]['form'] || $items[0]['length'] != $items[1]['length']) {
                     throw new \Exception("Form 和 length 必须一致");
                 }
             }

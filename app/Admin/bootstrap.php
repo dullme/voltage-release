@@ -22,6 +22,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Form;
 
 Encore\Admin\Form::forget(['map', 'editor']);
+Encore\Admin\Admin::js('/js/admin.js');
 
 Grid::init(function (Grid $grid) {
     $grid->model()->orderByDesc('id');

@@ -11,6 +11,17 @@ Route::group([
     'as'            => config('admin.route.prefix') . '.',
 ], function (Router $router) {
 
+    //公司
+    $router->resource('companies', CompanyController::class);
+    $router->get('company-list', "CompanyController@getCompany");
+
+    //公司联系人
+    $router->resource('company-contacts', CompanyContactController::class);
+
+    //项目
+    $router->resource('projects', ProjectController::class);
+
+
     //零件
     $router->resource('components', ComponentController::class);
 
