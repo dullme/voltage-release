@@ -2320,9 +2320,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      specifications: [],
       companies: [],
       loading: {
         project: false
@@ -2387,7 +2392,8 @@ __webpack_require__.r(__webpack_exports__);
         rowhead_to_cbx_2: '',
         distance_between_poles: '',
         remarks: '',
-        remark_list: {}
+        remark_list: {},
+        specifications: []
       }
     };
   },
@@ -2399,7 +2405,15 @@ __webpack_require__.r(__webpack_exports__);
       allowClear: true //选中项可清空
 
     }).on('change', function (e) {
-      _this.project_form[e.target.name] = e.currentTarget.value;
+      _this.project_form[e.target.name] = '#company_id'.val();
+    });
+    $('#specifications').select2({
+      placeholder: 'Please choose',
+      allowClear: true,
+      //选中项可清空
+      maximumSelectionLength: 10
+    }).on('change', function (e) {
+      _this.project_form[e.target.name] = $('#specifications').val() == null ? [] : $('#specifications').val();
     });
     $('#option_one').popover({
       trigger: 'hover',
@@ -2453,6 +2467,9 @@ __webpack_require__.r(__webpack_exports__);
     });
     axios.get('/admin/company-list').then(function (response) {
       _this2.companies = response.data.data;
+    });
+    axios.get('/admin/specification-list').then(function (response) {
+      _this2.specifications = response.data.data;
     });
   },
   methods: {
@@ -23092,7 +23109,62 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(9)
+                _c("div", { staticClass: "form-group  " }, [
+                  _c(
+                    "label",
+                    { staticClass: "col-sm-2 asterisk control-label" },
+                    [_vm._v("产品型号")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-8" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.project_form.specifications,
+                            expression: "project_form.specifications"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          id: "specifications",
+                          name: "specifications",
+                          multiple: "multiple"
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.project_form,
+                              "specifications",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      _vm._l(_vm.specifications, function(specification) {
+                        return _c(
+                          "option",
+                          { domProps: { value: specification.id } },
+                          [_vm._v(_vm._s(specification.name))]
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ])
               ])
             ])
           ]),
@@ -23218,18 +23290,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("span", { staticClass: "input-group-addon" }, [
       _c("i", { staticClass: "fa fa-pencil fa-fw" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group  " }, [
-      _c("label", { staticClass: "col-sm-2 asterisk control-label" }, [
-        _vm._v("产品型号")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-8" })
     ])
   }
 ]

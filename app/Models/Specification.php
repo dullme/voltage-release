@@ -12,8 +12,8 @@ class Specification extends BaseModel
         return $this->belongsTo(Bracket::class);
     }
 
-    public function solarPanel()
+    public function panels()
     {
-        return $this->belongsTo(SolarPanel::class);
+        return $this->belongsToMany(SolarPanel::class);
     }
 }

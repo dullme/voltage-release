@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\Enums\ItemType;
+use App\Enums\PosNeg;
 use App\Models\Combination;
 use App\Models\Item;
 use Encore\Admin\Controllers\AdminController;
@@ -32,9 +33,7 @@ class CombinationController extends AdminController
 
         $grid->column('name', __('Name'));
         $grid->column('show_name', __('Show name'));
-        $grid->column('type', __('Type'))->display(function ($type) {
-            return ItemType::getDescription($type);
-        })->label();
+        $grid->items()->pluck('name')->label();
         $grid->column('created_at', __('Created at'));
 
         return $grid;
@@ -53,7 +52,6 @@ class CombinationController extends AdminController
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('show_name', __('Show name'));
-        $show->field('type', __('Type'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -68,41 +66,33 @@ class CombinationController extends AdminController
     protected function form()
     {
         $form = new Form(new Combination());
+        $items = Item::all();
+        $items = $items->map(function ($item){
+            return [
+                'id' => $item->id,
+                'name' => $item->name .' : '. PosNeg::getDescription($item->pos_neg),
+            ];
+        });
 
         $form->text('name', __('Name'))->creationRules(['required', "unique:combinations"])
             ->updateRules(['required', "unique:combinations,name,{{id}}"]);
         $form->text('show_name', __('Show name'));
-        $form->radio('type')->options(ItemType::toSelectArray())->required();
-        $form->listbox('items', 'Extender')->options(Item::pluck('name', 'id'));
+        $form->listbox('items', 'Harness')->options($items->pluck('name', 'id'));
 
         $form->saving(function (Form $form) {
             if (is_null($form->items)) {
-                throw new \Exception("必须选择" . ItemType::getDescription(intval($form->type)));
+                throw new \Exception("必须选择 Harness");
             }
 
             $items = array_filter($form->items);
 
-            if (count($items) > 2) {
-                throw new \Exception("最多只能选择两个" . ItemType::getDescription(intval($form->type)));
+            if (count($items) != 2) {
+                throw new \Exception("必须选择两个 Harness");
             }
 
-            if (count($items) == 2) {
-                $items = Item::with('component')->whereIn('id', $items)->get();
-                $items = $items->map(function ($item) {
-                    return [
-                        'type'   => $item->type,
-                        'form'   => $item->form,
-                        'length' => $item->component->sum('length')
-                    ];
-                })->toArray();
-
-                if ($items[0]['type'] != $items[1]['type'] || $items[0]['type'] != $form->type) {
-                    throw new \Exception("type 必须一致");
-                }
-
-                if ($items[0]['form'] != $items[1]['form'] || $items[0]['length'] != $items[1]['length']) {
-                    throw new \Exception("Form 和 length 必须一致");
-                }
+            $items = Item::with('component')->whereIn('id', $items)->get();
+            if($items->unique('pos_neg')->count() != 2){
+                throw new \Exception("两个 Harness 必须一正一负");
             }
         });
 

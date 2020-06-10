@@ -33,6 +33,7 @@ Route::group([
 
     //产品型号
     $router->resource('specifications', SpecificationController::class);
+    $router->get('specification-list', "SpecificationController@getSpecification");
 
     //产品
     $router->resource('items', ItemController::class);

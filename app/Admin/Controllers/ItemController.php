@@ -2,8 +2,10 @@
 
 namespace App\Admin\Controllers;
 
+use App\Enums\ConnectionMethod;
 use App\Enums\ItemType;
 use App\Enums\PosNeg;
+use App\Models\CombinationItem;
 use App\Models\Component;
 use App\Models\Item;
 use App\Models\SolarPanel;
@@ -32,9 +34,8 @@ class ItemController extends AdminController
         $grid = new Grid(new Item());
 
         $grid->column('name', __('Name'));
-        $grid->column('type', __('Type'))->display(function ($type){
-            return ItemType::getDescription($type);
-        });
+        $grid->column('show_name', __('Show name'));
+
         $grid->column('pos_neg', __('Pos/Neg'))->display(function ($posNeg){
             return PosNeg::getDescription($posNeg);
         })->label([
@@ -42,12 +43,7 @@ class ItemController extends AdminController
             1 => 'warning',
         ]);
         $grid->specifications()->pluck('name')->label();
-        $grid->column('color', __('Color'));
-        $grid->column('form', __('Form'));
         $grid->column('created_at', __('Created at'));
-
-
-        $grid->tags()->pluck('name')->label();
 
         return $grid;
     }
@@ -64,12 +60,9 @@ class ItemController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('type', __('Type'));
         $show->field('pos_neg', __('Pos neg'));
-        $show->field('color', __('Color'));
         $show->field('file', __('File'));
         $show->field('image', __('Image'));
-        $show->field('form', __('Form'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -84,16 +77,25 @@ class ItemController extends AdminController
     protected function form()
     {
         $form = new Form(new Item());
+        $specifications = Specification::with('bracket', 'panels')->get();
+        $specifications = $specifications->map(function ($item){
+            $co = ConnectionMethod::getDescription($item->connection_method);
+            $bracket = $item->bracket->name;
+            $width = $item->panels->first()->width;
+            $string_length = getStringLength($width, $item->quantity);
+            return [
+                'id' => $item->id,
+                'name' => "$item->name : $co : $bracket : $string_length",
+            ];
+        });
+        $form->listbox('specifications')->options($specifications->pluck('name', 'id'));
 
         $form->text('name', __('Name'))->creationRules(['required', "unique:items"])
             ->updateRules(['required', "unique:items,name,{{id}}"]);
-        $form->radio('type')->options(ItemType::toSelectArray())->required();
         $form->radio('pos_neg')->options(PosNeg::toSelectArray())->required();
-        $form->text('color', __('Color'));
         $form->file('file', __('File'));
         $form->image('image', __('Image'));
-        $form->text('form', __('Form'));
-        $form->listbox('specifications')->options(Specification::all()->pluck('name', 'id'));
+
         $form->hasMany('component', 'Component', function (Form\NestedForm $form){
             $form->select('component_id', 'Component')->options(Component::pluck('name', 'id'))->required();
             $form->number('length', 'Length')->min(1)->default(1)->required();
@@ -102,16 +104,27 @@ class ItemController extends AdminController
                 'on'  => ['value' => 1, 'text' => 'True', 'color' => 'success'],
                 'off' => ['value' => 0, 'text' => 'False', 'color' => 'danger'],
             ])->default(0);
-            $form->number('tracker', 'Tracker')->min(0);
-            $form->currency('multiple', 'Multiple');
         });
 
-        $form->saving(function (Form $form){
-            if(is_null($form->component)){
-                throw new \Exception('Component 必须添加');
-            }
-        });
-
+        if($form->isEditing()){
+            $form->saving(function (Form $form){
+                if($form->model()->pos_neg != intval($form->pos_neg)){
+                    $count = CombinationItem::where('item_id', $form->model()->id)->count();
+                    if($count){
+                        throw new \Exception('该产品已存在组合无法修改正负极');
+                    }
+                }
+                if(is_null($form->component)){
+                    throw new \Exception('Component 必须添加');
+                }
+            });
+        }else{
+            $form->saving(function (Form $form){
+                if(is_null($form->component)){
+                    throw new \Exception('Component 必须添加');
+                }
+            });
+        }
 
         return $form;
     }

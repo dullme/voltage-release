@@ -101,6 +101,15 @@ class SolarPanelController extends AdminController
                     </div>";
         });
         $form->file('file', __('File'))->hidePreview()->removable();
+
+        $form->saving(function (Form $form) {
+//            $form->model()->id;
+            if ($form->width != $form->model()->width) {
+                throw new \Exception("width 被修改了");
+            }
+        });
+
+
         return $form;
     }
 }

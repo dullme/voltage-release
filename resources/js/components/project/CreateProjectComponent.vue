@@ -378,7 +378,9 @@
                                 <div class="form-group  ">
                                     <label class="col-sm-2 asterisk control-label">产品型号</label>
                                     <div class="col-sm-8">
-
+                                        <select class="form-control" id="specifications" name="specifications" v-model="project_form.specifications" multiple="multiple">
+                                            <option v-for="specification in specifications" :value="specification.id">{{ specification.name }}</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -416,6 +418,7 @@
     export default {
         data() {
             return {
+                specifications:[],
                 companies:[],
                 loading:{
                     project:false
@@ -478,6 +481,7 @@
                     distance_between_poles:'',
                     remarks:'',
                     remark_list:{},
+                    specifications:[],
                 }
             }
         },
@@ -487,7 +491,14 @@
                 placeholder : 'Please choose',
                 allowClear: true, //选中项可清空
             }).on('change', (e) => {
-                this.project_form[e.target.name] = e.currentTarget.value
+                this.project_form[e.target.name] = ('#company_id').val()
+            })
+            $('#specifications').select2({
+                placeholder : 'Please choose',
+                allowClear: true, //选中项可清空
+                maximumSelectionLength:10,
+            }).on('change', (e) => {
+                this.project_form[e.target.name] = $('#specifications').val() == null ? [] : $('#specifications').val()
             })
 
             $('#option_one').popover({
@@ -542,6 +553,10 @@
 
             axios.get('/admin/company-list').then(response => {
                 this.companies = response.data.data
+            })
+
+            axios.get('/admin/specification-list').then(response => {
+                this.specifications = response.data.data
             })
 
         },

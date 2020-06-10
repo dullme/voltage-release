@@ -19,8 +19,6 @@ class CreateItemComponentsTable extends Migration
             $table->unsignedBigInteger('component_id');
             $table->unsignedInteger('length')->comment('长度/ft');
             $table->unsignedInteger('quantity')->comment('数量');
-            $table->unsignedInteger('tracker')->default(0)->comment('Tracker to tracker');
-            $table->unsignedDecimal('multiple', 10, 2)->default(0)->comment('Multiple');
             $table->boolean('driver')->default(0)->comment('有无Driver');
 
             $table->timestamps();

@@ -17,7 +17,6 @@ class CreateCombinationsTable extends Migration
             $table->id();
             $table->string('name')->unique()->comment('组合名称');
             $table->string('show_name')->nullable()->comment('组合显示名称');
-            $table->unsignedTinyInteger('type')->comment('类型');
             $table->timestamps();
         });
     }

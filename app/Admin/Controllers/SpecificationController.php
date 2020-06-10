@@ -11,7 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class SpecificationController extends AdminController
+class SpecificationController extends ResponseController
 {
 
     /**
@@ -32,14 +32,15 @@ class SpecificationController extends AdminController
 
         $grid->column('name', __('Name'));
         $grid->column('show_name', __('Show name'));
-        $grid->column('solarPanel.name', __('SolarPanel name'));
+        $grid->panels()->pluck('name')->label();
         $grid->column('bracket.name', __('Bracket name'));
         $grid->column('connection_method', __('Connection method'))->display(function ($connection_method) {
             return ConnectionMethod::getDescription($connection_method);
         })->label();
         $grid->column('quantity', __('Module count per string'));
         $grid->column('string_length', __('String length/ft'))->display(function () {
-            return "<span data-toggle='tooltip' data-placement='top' title='{$this->solarPanel->width} x {$this->quantity} x " . STRING_LENGTH_BUFFER . "'>" . getStringLength($this->solarPanel->width, $this->quantity) . "</span>";
+            $width = $this->panels()->get()->first()->width;
+            return "<span data-toggle='tooltip' data-placement='top' title='{$width} x {$this->quantity} x " . STRING_LENGTH_BUFFER . "'>" . getStringLength($width, $this->quantity) . "</span>";
         });
         $grid->column('created_at', __('Created at'));
 
@@ -77,14 +78,46 @@ class SpecificationController extends AdminController
     {
         $form = new Form(new Specification());
 
+        $solarPanel = SolarPanel::all();
+        $solarPanel = $solarPanel->map(function ($item){
+            return [
+                'id'    => $item->id,
+                'name' => $item->name .' : '.$item->width,
+                'width' => $item->width
+            ];
+        });
+
+
         $form->text('name', __('Name'))->creationRules(['required', "unique:specifications"])
             ->updateRules(['required', "unique:specifications,name,{{id}}"]);
         $form->text('show_name', __('Show name'));
-        $form->select('solar_panel_id', __('Solar panel'))->options(SolarPanel::pluck('name', 'id'))->required();
+        $form->multipleSelect('panels', __('Solar panel'))->options($solarPanel->pluck('name', 'id'))->required();
         $form->select('bracket_id', __('Bracket id'))->options(Bracket::pluck('name', 'id'))->required();
         $form->select('connection_method', __('Connection method'))->options(ConnectionMethod::toSelectArray());
         $form->number('quantity', __('Module count per string'))->default(1)->min(1)->required();
 
+        $form->saving(function (Form $form) use($solarPanel) {
+            if (is_null($form->panels)) {
+                throw new \Exception("必须选择 Solar panel");
+            }
+
+            $panels = array_filter($form->panels);
+
+            $solarPanel = $solarPanel->whereIn('id', $panels);
+
+            if($solarPanel->unique('width')->count() != 1){
+                throw new \Exception("Width 必须相同");
+            }
+
+        });
+
         return $form;
+    }
+
+    public function getSpecification()
+    {
+        $specifications = Specification::select('id', 'name')->get();
+
+        return $this->responseSuccess($specifications);
     }
 }

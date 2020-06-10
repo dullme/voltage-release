@@ -16,12 +16,10 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique()->comment('item名称');
-            $table->unsignedTinyInteger('type')->comment('类型');
+            $table->string('show_name')->nullable()->comment('显示名称');
             $table->unsignedTinyInteger('pos_neg')->comment('正负极');
-            $table->string('color')->nullable()->comment('颜色');
             $table->string('file')->nullable()->comment('文件');
             $table->string('image')->nullable()->comment('图片');
-            $table->string('form')->nullable()->comment('特殊格式的文本');
             $table->timestamps();
         });
     }

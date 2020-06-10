@@ -15,7 +15,6 @@ class CreateSpecificationsTable extends Migration
     {
         Schema::create('specifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('solar_panel_id')->comment('太阳能板种类');
             $table->unsignedBigInteger('bracket_id')->comment('支架种类');
             $table->string('name')->unique()->comment('产品型号名称');
             $table->string('show_name')->nullable()->comment('显示名');
