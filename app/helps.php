@@ -14,3 +14,13 @@ function getStringLength($solarPanelWidth, $specificationQuantity)
 {
     return ceil($solarPanelWidth * $specificationQuantity * STRING_LENGTH_BUFFER);
 }
+
+function ceilDecimal($number, $ceil = 3){
+    $str = '';
+    for ($i = 1; $i <= $ceil; $i++) {
+        $str .= 0;
+    }
+    $str = intval('1' . $str);
+
+    return ceil($number * $str) / $str;
+}

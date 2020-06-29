@@ -220,10 +220,10 @@
                                             <div class="col-sm-6 mb15">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-pencil fa-fw"></i></span>
-                                                    <input type="number" class="form-control" :class="checkbox_list.rowhead_to_cbx_1 ? 'checked' : ''" v-model="project_form.rowhead_to_cbx_1">
+                                                    <input type="number" class="form-control" :class="checkbox_list.row_head_to_cbx_1 ? 'checked' : ''" v-model="project_form.row_head_to_cbx_1">
                                                     <span class="input-group-addon" style="border-left: unset">ft</span>
                                                     <span class="input-group-addon">
-                                                        <input type="checkbox" v-model="checkbox_list.rowhead_to_cbx_1">
+                                                        <input type="checkbox" v-model="checkbox_list.row_head_to_cbx_1">
                                                     </span>
                                                 </div>
                                             </div>
@@ -231,10 +231,10 @@
                                             <div class="col-sm-6 mb15" v-if="project_form.layout_of_whip == 2">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Rowhead to CBX'</span>
-                                                    <input type="number" class="form-control" :class="checkbox_list.rowhead_to_cbx_2 ? 'checked' : ''" v-model="project_form.rowhead_to_cbx_2">
+                                                    <input type="number" class="form-control" :class="checkbox_list.row_head_to_cbx_2 ? 'checked' : ''" v-model="project_form.row_head_to_cbx_2">
                                                     <span class="input-group-addon" style="border-left: unset">ft</span>
                                                     <span class="input-group-addon">
-                                                        <input type="checkbox" v-model="checkbox_list.rowhead_to_cbx_2">
+                                                        <input type="checkbox" v-model="checkbox_list.row_head_to_cbx_2">
                                                     </span>
                                                 </div>
                                             </div>
@@ -349,18 +349,18 @@
                                             <input type="text" class="form-control" v-model="checkbox_list_remarks.end_of_extender">
                                         </div>
 
-                                        <div class="row" v-if="checkbox_list.rowhead_to_cbx_1 || checkbox_list.rowhead_to_cbx_2">
+                                        <div class="row" v-if="checkbox_list.row_head_to_cbx_1 || checkbox_list.row_head_to_cbx_2">
                                             <div class="col-sm-6 mb15">
-                                                <div class="input-group" v-if="checkbox_list.rowhead_to_cbx_1">
+                                                <div class="input-group" v-if="checkbox_list.row_head_to_cbx_1">
                                                     <span class="input-group-addon asterisk">Rowhead to CBX</span>
-                                                    <input type="text" class="form-control" v-model="checkbox_list_remarks.rowhead_to_cbx_1">
+                                                    <input type="text" class="form-control" v-model="checkbox_list_remarks.row_head_to_cbx_1">
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-6 mb15" v-if="checkbox_list.rowhead_to_cbx_2">
+                                            <div class="col-sm-6 mb15" v-if="checkbox_list.row_head_to_cbx_2">
                                                 <div class="input-group">
                                                     <span class="input-group-addon asterisk">Rowhead to CBX'</span>
-                                                    <input type="text" class="form-control" v-model="checkbox_list_remarks.rowhead_to_cbx_2">
+                                                    <input type="text" class="form-control" v-model="checkbox_list_remarks.row_head_to_cbx_2">
                                                 </div>
                                             </div>
                                         </div>
@@ -436,8 +436,8 @@
                     module_to_module_extender:false,
                     end_of_extender:false,
                     layout_of_whip:false,
-                    rowhead_to_cbx_1:false,
-                    rowhead_to_cbx_2:false,
+                    row_head_to_cbx_1:false,
+                    row_head_to_cbx_2:false,
                     distance_between_poles:false,
                 },
                 checkbox_list_remarks:{
@@ -453,8 +453,8 @@
                     module_to_module_extender:'',
                     end_of_extender:'',
                     layout_of_whip:'',
-                    rowhead_to_cbx_1:'',
-                    rowhead_to_cbx_2:'',
+                    row_head_to_cbx_1:'',
+                    row_head_to_cbx_2:'',
                     distance_between_poles:'',
                 },
                 project_form:{
@@ -476,8 +476,8 @@
                     module_to_module_extender:'',
                     end_of_extender:'UNKNOWN',
                     layout_of_whip:'0',
-                    rowhead_to_cbx_1:'',
-                    rowhead_to_cbx_2:'',
+                    row_head_to_cbx_1:'',
+                    row_head_to_cbx_2:'',
                     distance_between_poles:'',
                     remarks:'',
                     remark_list:{},
@@ -491,7 +491,7 @@
                 placeholder : 'Please choose',
                 allowClear: true, //选中项可清空
             }).on('change', (e) => {
-                this.project_form[e.target.name] = ('#company_id').val()
+                this.project_form[e.target.name] = $('#company_id').val()
             })
             $('#specifications').select2({
                 placeholder : 'Please choose',
@@ -533,20 +533,20 @@
 
             this.$watch('project_form.layout_of_whip', ()=>{
                 if(this.project_form.layout_of_whip == '0'){
-                    this.project_form.rowhead_to_cbx_1 = ''
-                    this.checkbox_list.rowhead_to_cbx_1=false
-                    this.checkbox_list_remarks.rowhead_to_cbx_1=''
-                    this.project_form.rowhead_to_cbx_2 = ''
-                    this.checkbox_list.rowhead_to_cbx_2=false
-                    this.checkbox_list_remarks.rowhead_to_cbx_2=''
+                    this.project_form.row_head_to_cbx_1 = ''
+                    this.checkbox_list.row_head_to_cbx_1=false
+                    this.checkbox_list_remarks.row_head_to_cbx_1=''
+                    this.project_form.row_head_to_cbx_2 = ''
+                    this.checkbox_list.row_head_to_cbx_2=false
+                    this.checkbox_list_remarks.row_head_to_cbx_2=''
                     this.project_form.distance_between_poles = ''
                     this.checkbox_list.distance_between_poles=false
                     this.checkbox_list_remarks.distance_between_poles=''
                 }
                 if(this.project_form.layout_of_whip == '1'){
-                    this.project_form.rowhead_to_cbx_2 = ''
-                    this.checkbox_list.rowhead_to_cbx_2=false
-                    this.checkbox_list_remarks.rowhead_to_cbx_2=''
+                    this.project_form.row_head_to_cbx_2 = ''
+                    this.checkbox_list.row_head_to_cbx_2=false
+                    this.checkbox_list_remarks.row_head_to_cbx_2=''
                 }
             })
 

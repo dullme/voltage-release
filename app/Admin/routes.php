@@ -20,6 +20,7 @@ Route::group([
 
     //项目
     $router->resource('projects', ProjectController::class);
+    $router->get('projects/info/{id}', "ProjectController@info");
 
 
     //零件

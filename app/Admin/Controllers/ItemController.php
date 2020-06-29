@@ -117,11 +117,17 @@ class ItemController extends AdminController
                 if(is_null($form->component)){
                     throw new \Exception('Component 必须添加');
                 }
+                if(!!!array_filter($form->specifications)){
+                    throw new \Exception('Specifications 必须添加');
+                }
             });
         }else{
             $form->saving(function (Form $form){
                 if(is_null($form->component)){
                     throw new \Exception('Component 必须添加');
+                }
+                if(!!!array_filter($form->specifications)){
+                    throw new \Exception('Specifications 必须添加');
                 }
             });
         }

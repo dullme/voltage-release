@@ -104,8 +104,10 @@ class SolarPanelController extends AdminController
 
         $form->saving(function (Form $form) {
 //            $form->model()->id;
-            if ($form->width != $form->model()->width) {
-                throw new \Exception("width 被修改了");
+            if($form->isEditing()){
+                if ($form->width != $form->model()->width) {
+                    throw new \Exception("width 被修改了");
+                }
             }
         });
 

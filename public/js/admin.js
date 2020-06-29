@@ -2345,8 +2345,8 @@ __webpack_require__.r(__webpack_exports__);
         module_to_module_extender: false,
         end_of_extender: false,
         layout_of_whip: false,
-        rowhead_to_cbx_1: false,
-        rowhead_to_cbx_2: false,
+        row_head_to_cbx_1: false,
+        row_head_to_cbx_2: false,
         distance_between_poles: false
       },
       checkbox_list_remarks: {
@@ -2362,8 +2362,8 @@ __webpack_require__.r(__webpack_exports__);
         module_to_module_extender: '',
         end_of_extender: '',
         layout_of_whip: '',
-        rowhead_to_cbx_1: '',
-        rowhead_to_cbx_2: '',
+        row_head_to_cbx_1: '',
+        row_head_to_cbx_2: '',
         distance_between_poles: ''
       },
       project_form: {
@@ -2388,8 +2388,8 @@ __webpack_require__.r(__webpack_exports__);
         module_to_module_extender: '',
         end_of_extender: 'UNKNOWN',
         layout_of_whip: '0',
-        rowhead_to_cbx_1: '',
-        rowhead_to_cbx_2: '',
+        row_head_to_cbx_1: '',
+        row_head_to_cbx_2: '',
         distance_between_poles: '',
         remarks: '',
         remark_list: {},
@@ -2405,7 +2405,7 @@ __webpack_require__.r(__webpack_exports__);
       allowClear: true //选中项可清空
 
     }).on('change', function (e) {
-      _this.project_form[e.target.name] = '#company_id'.val();
+      _this.project_form[e.target.name] = $('#company_id').val();
     });
     $('#specifications').select2({
       placeholder: 'Please choose',
@@ -2448,21 +2448,21 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.$watch('project_form.layout_of_whip', function () {
       if (_this2.project_form.layout_of_whip == '0') {
-        _this2.project_form.rowhead_to_cbx_1 = '';
-        _this2.checkbox_list.rowhead_to_cbx_1 = false;
-        _this2.checkbox_list_remarks.rowhead_to_cbx_1 = '';
-        _this2.project_form.rowhead_to_cbx_2 = '';
-        _this2.checkbox_list.rowhead_to_cbx_2 = false;
-        _this2.checkbox_list_remarks.rowhead_to_cbx_2 = '';
+        _this2.project_form.row_head_to_cbx_1 = '';
+        _this2.checkbox_list.row_head_to_cbx_1 = false;
+        _this2.checkbox_list_remarks.row_head_to_cbx_1 = '';
+        _this2.project_form.row_head_to_cbx_2 = '';
+        _this2.checkbox_list.row_head_to_cbx_2 = false;
+        _this2.checkbox_list_remarks.row_head_to_cbx_2 = '';
         _this2.project_form.distance_between_poles = '';
         _this2.checkbox_list.distance_between_poles = false;
         _this2.checkbox_list_remarks.distance_between_poles = '';
       }
 
       if (_this2.project_form.layout_of_whip == '1') {
-        _this2.project_form.rowhead_to_cbx_2 = '';
-        _this2.checkbox_list.rowhead_to_cbx_2 = false;
-        _this2.checkbox_list_remarks.rowhead_to_cbx_2 = '';
+        _this2.project_form.row_head_to_cbx_2 = '';
+        _this2.checkbox_list.row_head_to_cbx_2 = false;
+        _this2.checkbox_list_remarks.row_head_to_cbx_2 = '';
       }
     });
     axios.get('/admin/company-list').then(function (response) {
@@ -22089,17 +22089,17 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.project_form.rowhead_to_cbx_1,
-                                    expression: "project_form.rowhead_to_cbx_1"
+                                    value: _vm.project_form.row_head_to_cbx_1,
+                                    expression: "project_form.row_head_to_cbx_1"
                                   }
                                 ],
                                 staticClass: "form-control",
-                                class: _vm.checkbox_list.rowhead_to_cbx_1
+                                class: _vm.checkbox_list.row_head_to_cbx_1
                                   ? "checked"
                                   : "",
                                 attrs: { type: "number" },
                                 domProps: {
-                                  value: _vm.project_form.rowhead_to_cbx_1
+                                  value: _vm.project_form.row_head_to_cbx_1
                                 },
                                 on: {
                                   input: function($event) {
@@ -22108,7 +22108,7 @@ var render = function() {
                                     }
                                     _vm.$set(
                                       _vm.project_form,
-                                      "rowhead_to_cbx_1",
+                                      "row_head_to_cbx_1",
                                       $event.target.value
                                     )
                                   }
@@ -22130,26 +22130,27 @@ var render = function() {
                                     {
                                       name: "model",
                                       rawName: "v-model",
-                                      value: _vm.checkbox_list.rowhead_to_cbx_1,
+                                      value:
+                                        _vm.checkbox_list.row_head_to_cbx_1,
                                       expression:
-                                        "checkbox_list.rowhead_to_cbx_1"
+                                        "checkbox_list.row_head_to_cbx_1"
                                     }
                                   ],
                                   attrs: { type: "checkbox" },
                                   domProps: {
                                     checked: Array.isArray(
-                                      _vm.checkbox_list.rowhead_to_cbx_1
+                                      _vm.checkbox_list.row_head_to_cbx_1
                                     )
                                       ? _vm._i(
-                                          _vm.checkbox_list.rowhead_to_cbx_1,
+                                          _vm.checkbox_list.row_head_to_cbx_1,
                                           null
                                         ) > -1
-                                      : _vm.checkbox_list.rowhead_to_cbx_1
+                                      : _vm.checkbox_list.row_head_to_cbx_1
                                   },
                                   on: {
                                     change: function($event) {
                                       var $$a =
-                                          _vm.checkbox_list.rowhead_to_cbx_1,
+                                          _vm.checkbox_list.row_head_to_cbx_1,
                                         $$el = $event.target,
                                         $$c = $$el.checked ? true : false
                                       if (Array.isArray($$a)) {
@@ -22159,14 +22160,14 @@ var render = function() {
                                           $$i < 0 &&
                                             _vm.$set(
                                               _vm.checkbox_list,
-                                              "rowhead_to_cbx_1",
+                                              "row_head_to_cbx_1",
                                               $$a.concat([$$v])
                                             )
                                         } else {
                                           $$i > -1 &&
                                             _vm.$set(
                                               _vm.checkbox_list,
-                                              "rowhead_to_cbx_1",
+                                              "row_head_to_cbx_1",
                                               $$a
                                                 .slice(0, $$i)
                                                 .concat($$a.slice($$i + 1))
@@ -22175,7 +22176,7 @@ var render = function() {
                                       } else {
                                         _vm.$set(
                                           _vm.checkbox_list,
-                                          "rowhead_to_cbx_1",
+                                          "row_head_to_cbx_1",
                                           $$c
                                         )
                                       }
@@ -22201,18 +22202,18 @@ var render = function() {
                                         name: "model",
                                         rawName: "v-model",
                                         value:
-                                          _vm.project_form.rowhead_to_cbx_2,
+                                          _vm.project_form.row_head_to_cbx_2,
                                         expression:
-                                          "project_form.rowhead_to_cbx_2"
+                                          "project_form.row_head_to_cbx_2"
                                       }
                                     ],
                                     staticClass: "form-control",
-                                    class: _vm.checkbox_list.rowhead_to_cbx_2
+                                    class: _vm.checkbox_list.row_head_to_cbx_2
                                       ? "checked"
                                       : "",
                                     attrs: { type: "number" },
                                     domProps: {
-                                      value: _vm.project_form.rowhead_to_cbx_2
+                                      value: _vm.project_form.row_head_to_cbx_2
                                     },
                                     on: {
                                       input: function($event) {
@@ -22221,7 +22222,7 @@ var render = function() {
                                         }
                                         _vm.$set(
                                           _vm.project_form,
-                                          "rowhead_to_cbx_2",
+                                          "row_head_to_cbx_2",
                                           $event.target.value
                                         )
                                       }
@@ -22248,28 +22249,29 @@ var render = function() {
                                             rawName: "v-model",
                                             value:
                                               _vm.checkbox_list
-                                                .rowhead_to_cbx_2,
+                                                .row_head_to_cbx_2,
                                             expression:
-                                              "checkbox_list.rowhead_to_cbx_2"
+                                              "checkbox_list.row_head_to_cbx_2"
                                           }
                                         ],
                                         attrs: { type: "checkbox" },
                                         domProps: {
                                           checked: Array.isArray(
-                                            _vm.checkbox_list.rowhead_to_cbx_2
+                                            _vm.checkbox_list.row_head_to_cbx_2
                                           )
                                             ? _vm._i(
                                                 _vm.checkbox_list
-                                                  .rowhead_to_cbx_2,
+                                                  .row_head_to_cbx_2,
                                                 null
                                               ) > -1
-                                            : _vm.checkbox_list.rowhead_to_cbx_2
+                                            : _vm.checkbox_list
+                                                .row_head_to_cbx_2
                                         },
                                         on: {
                                           change: function($event) {
                                             var $$a =
                                                 _vm.checkbox_list
-                                                  .rowhead_to_cbx_2,
+                                                  .row_head_to_cbx_2,
                                               $$el = $event.target,
                                               $$c = $$el.checked ? true : false
                                             if (Array.isArray($$a)) {
@@ -22279,14 +22281,14 @@ var render = function() {
                                                 $$i < 0 &&
                                                   _vm.$set(
                                                     _vm.checkbox_list,
-                                                    "rowhead_to_cbx_2",
+                                                    "row_head_to_cbx_2",
                                                     $$a.concat([$$v])
                                                   )
                                               } else {
                                                 $$i > -1 &&
                                                   _vm.$set(
                                                     _vm.checkbox_list,
-                                                    "rowhead_to_cbx_2",
+                                                    "row_head_to_cbx_2",
                                                     $$a
                                                       .slice(0, $$i)
                                                       .concat(
@@ -22297,7 +22299,7 @@ var render = function() {
                                             } else {
                                               _vm.$set(
                                                 _vm.checkbox_list,
-                                                "rowhead_to_cbx_2",
+                                                "row_head_to_cbx_2",
                                                 $$c
                                               )
                                             }
@@ -22940,11 +22942,11 @@ var render = function() {
                         ])
                       : _vm._e(),
                     _vm._v(" "),
-                    _vm.checkbox_list.rowhead_to_cbx_1 ||
-                    _vm.checkbox_list.rowhead_to_cbx_2
+                    _vm.checkbox_list.row_head_to_cbx_1 ||
+                    _vm.checkbox_list.row_head_to_cbx_2
                       ? _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-sm-6 mb15" }, [
-                            _vm.checkbox_list.rowhead_to_cbx_1
+                            _vm.checkbox_list.row_head_to_cbx_1
                               ? _c("div", { staticClass: "input-group" }, [
                                   _c(
                                     "span",
@@ -22961,9 +22963,9 @@ var render = function() {
                                         rawName: "v-model",
                                         value:
                                           _vm.checkbox_list_remarks
-                                            .rowhead_to_cbx_1,
+                                            .row_head_to_cbx_1,
                                         expression:
-                                          "checkbox_list_remarks.rowhead_to_cbx_1"
+                                          "checkbox_list_remarks.row_head_to_cbx_1"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -22971,7 +22973,7 @@ var render = function() {
                                     domProps: {
                                       value:
                                         _vm.checkbox_list_remarks
-                                          .rowhead_to_cbx_1
+                                          .row_head_to_cbx_1
                                     },
                                     on: {
                                       input: function($event) {
@@ -22980,7 +22982,7 @@ var render = function() {
                                         }
                                         _vm.$set(
                                           _vm.checkbox_list_remarks,
-                                          "rowhead_to_cbx_1",
+                                          "row_head_to_cbx_1",
                                           $event.target.value
                                         )
                                       }
@@ -22990,7 +22992,7 @@ var render = function() {
                               : _vm._e()
                           ]),
                           _vm._v(" "),
-                          _vm.checkbox_list.rowhead_to_cbx_2
+                          _vm.checkbox_list.row_head_to_cbx_2
                             ? _c("div", { staticClass: "col-sm-6 mb15" }, [
                                 _c("div", { staticClass: "input-group" }, [
                                   _c(
@@ -23008,9 +23010,9 @@ var render = function() {
                                         rawName: "v-model",
                                         value:
                                           _vm.checkbox_list_remarks
-                                            .rowhead_to_cbx_2,
+                                            .row_head_to_cbx_2,
                                         expression:
-                                          "checkbox_list_remarks.rowhead_to_cbx_2"
+                                          "checkbox_list_remarks.row_head_to_cbx_2"
                                       }
                                     ],
                                     staticClass: "form-control",
@@ -23018,7 +23020,7 @@ var render = function() {
                                     domProps: {
                                       value:
                                         _vm.checkbox_list_remarks
-                                          .rowhead_to_cbx_2
+                                          .row_head_to_cbx_2
                                     },
                                     on: {
                                       input: function($event) {
@@ -23027,7 +23029,7 @@ var render = function() {
                                         }
                                         _vm.$set(
                                           _vm.checkbox_list_remarks,
-                                          "rowhead_to_cbx_2",
+                                          "row_head_to_cbx_2",
                                           $event.target.value
                                         )
                                       }
