@@ -109,9 +109,9 @@ class HarnessController extends AdminController
             if ($component_ids->unique()->count() != $component_ids->count()) {
                 throw new \Exception('存在相同的组件');
             }
-            $components = is_null($form->component) ? 0 : Component::whereIn('id', $component_ids)->whereIn('part_type', [PartType::PVWire, PartType::MVCable])->get();
+            $components = Component::whereIn('id', $component_ids)->whereIn('part_type', [PartType::PVWire, PartType::MVCable])->get();
 
-            if ($components->count() == 0) {
+            if (is_null($form->component) || $components->count() == 0) {
                 throw new \Exception('必须添加一根线');
             }
 
