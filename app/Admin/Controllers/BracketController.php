@@ -66,8 +66,8 @@ class BracketController extends AdminController
 
         $form->text('name', __('Name'))->creationRules(['required', "unique:brackets"])
             ->updateRules(['required', "unique:brackets,name,{{id}}"]);
-        $form->number('driver', __('Driver'))->min(1)->rules('required|integer|min:1');
-        $form->number('buffer', __('Buffer'))->min(1)->rules('required|integer|min:1');
+        $form->number('driver', __('Driver'))->min(0)->rules('required|integer|min:0');
+        $form->number('buffer', __('Buffer'))->min(0)->rules('required|integer|min:0');
         $form->file('file', __('File'))->hidePreview()->removable();
 
         return $form;

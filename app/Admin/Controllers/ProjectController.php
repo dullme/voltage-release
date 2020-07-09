@@ -188,4 +188,21 @@ EOF
 
         return $this->responseSuccess(true);
     }
+
+    public function addTypical($id, Content $content)
+    {
+        Admin::script(<<<EOF
+            const app = new Vue({
+                el: '#app'
+            });
+EOF
+        );
+
+        $project = Project::findOrFail($id);
+
+        return $content
+            ->title($this->title())
+            ->description($this->description['create'] ?? trans('admin.create'))
+            ->body("<project-typical-create project='{$project}'></project-typical-create>");
+    }
 }

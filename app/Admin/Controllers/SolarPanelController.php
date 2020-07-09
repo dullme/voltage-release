@@ -83,8 +83,8 @@ class SolarPanelController extends AdminController
             ->updateRules(['required', "unique:solar_panels,name,{{id}}"]);
         $form->number('length', __('Length/mm'))->min(1)->rules('required|integer|min:1');
         $form->number('width', __('Width/mm'))->min(1)->rules('required|integer|min:1');
-        $form->number('m_l_pos', __('Module lead positive'))->min(1)->rules('required|integer|min:1');
-        $form->number('m_l_neg', __('Module lead negative'))->min(1)->rules('required|integer|min:1');
+        $form->number('m_l_pos', __('Module lead positive'))->min(0)->rules('required|integer|min:0');
+        $form->number('m_l_neg', __('Module lead negative'))->min(0)->rules('required|integer|min:0');
         $form->radio('placement_method', __('Placement Method'))->options(PlacementMethod::toSelectArray())->required();
         $form->display('', __(''))->with(function ($value) {
             $portrait = asset('/images/portrait.png');

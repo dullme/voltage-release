@@ -11,6 +11,7 @@ use Encore\Admin\Show;
 
 class ComponentController extends AdminController
 {
+
     /**
      * Title for current resource.
      *
@@ -28,11 +29,14 @@ class ComponentController extends AdminController
         $grid = new Grid(new Component());
 
         $grid->column('name', __('Name'));
-        $grid->column('part_type', __('Part type'))->display(function ($part_type){
+        $grid->column('part_type', __('Part type'))->display(function ($part_type) {
             return PartType::getDescription($part_type);
         })->label();
-        $grid->column('price', __('Price'));
+        $grid->column('price', __('Price/RMB'));
         $grid->column('weight', __('Weight/kg'));
+        $grid->column('line_number', __('Line Number'))->display(function ($line_number){
+            return isset(LINE_NUMBER[$line_number]) ? LINE_NUMBER[$line_number] : '';
+        });
         $grid->column('created_at', __('Created at'));
 
         return $grid;
@@ -67,11 +71,25 @@ class ComponentController extends AdminController
     protected function form()
     {
         $form = new Form(new Component());
-        $form->text('name', __('Name'))->required();
-        $form->select('part_type')->options(PartType::toSelectArray())->required();
-//        $form->number('part_type', __('Part type'));
+
+        $form->text('name', __('Name'))->creationRules(['required', "unique:components"])
+            ->updateRules(['required', "unique:components,name,{{id}}"]);
+        $form->select('part_type')->options(PartType::toSelectArray())
+            ->when('in', [PartType::PVWire, PartType::MVCable, PartType::MaleConnector, PartType::FemaleConnector], function (Form $form) {
+                $form->select('line_number', __('Line number'))->options(LINE_NUMBER);
+            })->required();
         $form->decimal('price', __('Price'))->required();
         $form->decimal('weight', __('Weight'))->required();
+
+        $form->saving(function (Form $form){
+            if(in_array($form->part_type, [PartType::PVWire, PartType::MVCable, PartType::MaleConnector, PartType::FemaleConnector])){
+                if(is_null($form->line_number)){
+                    throw new \Exception("请选择 Line number");
+                }
+            }else{
+                $form->line_number = NULL;
+            }
+        });
 
         return $form;
     }

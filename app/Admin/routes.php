@@ -21,6 +21,7 @@ Route::group([
     //项目
     $router->resource('projects', ProjectController::class);
     $router->get('projects/info/{id}', "ProjectController@info");
+    $router->get('projects/typical/add/{id}', 'ProjectController@addTypical');
 
 
     //零件
@@ -41,7 +42,12 @@ Route::group([
 
     //组合
     $router->resource('combinations', CombinationController::class);
+    $router->get('combination-list', "CombinationController@getCombinationList");
 
     $router->get('/', 'HomeController@index')->name('home');
+
+
+    //线束设计
+    $router->resource('harnesses', HarnessController::class);
 
 });

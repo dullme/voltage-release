@@ -105,9 +105,9 @@ class SpecificationController extends ResponseController
 
             $solarPanel = $solarPanel->whereIn('id', $panels);
 
-            if($solarPanel->unique('width')->count() != 1){
-                throw new \Exception("Width 必须相同");
-            }
+//            if($solarPanel->unique('width')->count() != 1){
+//                throw new \Exception("Width 必须相同");
+//            } 7-2 说不需要限制
 
         });
 

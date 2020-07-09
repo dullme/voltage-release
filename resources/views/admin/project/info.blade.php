@@ -15,11 +15,11 @@
 {{--                            <i class="fa fa-edit"></i><span class="hidden-xs"> Harness</span>--}}
 {{--                        </a>--}}
 {{--                    </div>--}}
-{{--                    <div class="btn-group pull-right" style="margin-right: 5px">--}}
-{{--                        <a href="{{ url('/admin/block/add/'.$project->id) }}" class="btn btn-sm btn-primary" title="Edit">--}}
-{{--                            <i class="fa fa-edit"></i><span class="hidden-xs"> Block</span>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
+                    <div class="btn-group pull-right" style="margin-right: 5px">
+                        <a href="{{ url('/admin/projects/typical/add/'.$project->id) }}" class="btn btn-sm btn-primary" title="Edit">
+                            <i class="fa fa-edit"></i><span class="hidden-xs"> Typical</span>
+                        </a>
+                    </div>
                     <div class="btn-group pull-right" style="margin-right: 5px">
                         <a href="{{ url('/admin/projects') }}" class="btn btn-sm btn-default" title="List">
                             <i class="fa fa-list"></i><span class="hidden-xs"> List</span>

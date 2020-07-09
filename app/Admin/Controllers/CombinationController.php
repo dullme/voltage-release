@@ -12,7 +12,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\MessageBag;
 
-class CombinationController extends AdminController
+class CombinationController extends ResponseController
 {
 
     /**
@@ -97,5 +97,12 @@ class CombinationController extends AdminController
         });
 
         return $form;
+    }
+
+    public function getCombinationList()
+    {
+        $combination = Combination::select('id', 'name')->get();
+
+        return $this->responseSuccess($combination);
     }
 }

@@ -83,9 +83,12 @@ class ItemController extends AdminController
             $bracket = $item->bracket->name;
             $width = $item->panels->first()->width;
             $string_length = getStringLength($width, $item->quantity);
+
+            $string_length = ceil($string_length * 0.0032808 * STRING_LENGTH_BUFFER);//向上取整
+
             return [
                 'id' => $item->id,
-                'name' => "$item->name : $co : $bracket : $string_length",
+                'name' => "$item->name : $co : $bracket : $string_length ",
             ];
         });
         $form->listbox('specifications')->options($specifications->pluck('name', 'id'));
@@ -93,18 +96,19 @@ class ItemController extends AdminController
         $form->text('name', __('Name'))->creationRules(['required', "unique:items"])
             ->updateRules(['required', "unique:items,name,{{id}}"]);
         $form->radio('pos_neg')->options(PosNeg::toSelectArray())->required();
-        $form->file('file', __('File'));
-        $form->image('image', __('Image'));
 
         $form->hasMany('component', 'Component', function (Form\NestedForm $form){
             $form->select('component_id', 'Component')->options(Component::pluck('name', 'id'))->required();
             $form->number('length', 'Length')->min(1)->default(1)->required();
             $form->number('quantity', 'Quantity')->min(1)->default(1)->required();
             $form->switch('driver', 'Driver')->states([
-                'on'  => ['value' => 1, 'text' => 'True', 'color' => 'success'],
-                'off' => ['value' => 0, 'text' => 'False', 'color' => 'danger'],
-            ])->default(0);
+                'on'  => ['value' => 1, 'text' => '有', 'color' => 'success'],
+                'off' => ['value' => 0, 'text' => '无', 'color' => 'danger'],
+            ])->default(0);//修改成☑勾选模式
         });
+
+        $form->file('file', __('File'))->removable();
+        $form->image('image', __('Image'))->removable();
 
         if($form->isEditing()){
             $form->saving(function (Form $form){
