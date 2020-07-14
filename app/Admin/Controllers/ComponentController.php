@@ -7,6 +7,7 @@ use App\Models\Component;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
 class ComponentController extends AdminController
@@ -63,12 +64,21 @@ class ComponentController extends AdminController
         return $show;
     }
 
+    public function edit($id, Content $content)
+    {
+        return $content
+            ->title($this->title())
+            ->description($this->description['edit'] ?? trans('admin.edit'))
+            ->body($this->form($id)->edit($id));
+    }
+
+
     /**
      * Make a form builder.
      *
      * @return Form
      */
-    protected function form()
+    protected function form($id = null)
     {
         $form = new Form(new Component());
 
@@ -81,11 +91,26 @@ class ComponentController extends AdminController
         $form->decimal('price', __('Price'))->required();
         $form->decimal('weight', __('Weight'))->required();
 
-        $form->saving(function (Form $form){
+        $form->saving(function (Form $form) use ($id){
             if(in_array($form->part_type, [PartType::PVWire, PartType::MVCable, PartType::MaleConnector, PartType::FemaleConnector])){
                 if(is_null($form->line_number)){
                     throw new \Exception("请选择 Line number");
                 }
+
+
+                if($form->isEditing()){
+                    $component_count = Component::where('line_number', $form->line_number)->where('id', '!=', $id)->count();
+                    if($component_count){
+                        throw new \Exception("Line number 已存在");
+                    }
+                }else{
+                    $component_count = Component::where('line_number', $form->line_number)->count();
+                    if($component_count){
+                        throw new \Exception("Line number 已存在");
+                    }
+                }
+
+
             }else{
                 $form->line_number = NULL;
             }

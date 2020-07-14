@@ -41,6 +41,14 @@ class HarnessController extends AdminController
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
+        $grid->disableActions();
+
+//        $grid->actions(function (Grid\Displayers\Actions $actions){
+//            $actions->disableView();
+//            $actions->disableEdit();
+//            $actions->disableDelete();
+//        });
+
         return $grid;
     }
 
@@ -136,6 +144,7 @@ class HarnessController extends AdminController
 
             $harness = Harness::where('name', 'like', $name.'%')->count();
             $harness += 1;
+
             $form->name = $name.sprintf('%02d', $harness);
         });
 
